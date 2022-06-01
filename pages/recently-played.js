@@ -21,9 +21,9 @@ const RecentlyPlayed = () => {
       }
       setRecentlyPlayed(res.data.items);
       setIsLoading(false);
+      console.log(JSON.parse(localStorage.getItem("authorization")));
     };
     if (isLoggedIn) {
-      // TODO: fetch genres
       fetchData();
     } else {
       router.push("/");

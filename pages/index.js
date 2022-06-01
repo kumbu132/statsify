@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { useStatsifyContext } from "../context/context";
-import { fetchUserDetails } from "../utils";
+import { fetchUserDetails, checkIfTokenValid, fetchUser } from "../utils";
 import Loader from "../components/views/Loader";
 import SignIn from "../components/views/SignIn";
 import LandingPage from "../components/views/LandingPage";
@@ -11,10 +11,21 @@ export default function Home() {
   const { isLoggedIn, setIsLoggedIn, user, setUser, isLoading, setIsLoading } =
     useStatsifyContext();
   const router = useRouter();
+
   useEffect(() => {
-    if (!isLoggedIn) {
-      setIsLoading(false);
-    }
+    const setUserDetails = async () => {
+      const res = await fetchUser();
+      if (res.status && res.status === 200) {
+        setIsLoggedIn(true);
+        setUser(res.data);
+        console.log({ data: res.data });
+      } else {
+        setIsLoggedIn(false);
+        setUser(null);
+        router.push("/error");
+      }
+    };
+
     const fetchData = async () => {
       const res = await fetchUserDetails(router.query.code);
       if (res.status === 403) {
@@ -26,6 +37,11 @@ export default function Home() {
       }
     };
 
+    setIsLoading(false);
+    if (checkIfTokenValid()) {
+      setUserDetails();
+    }
+
     if (router.query.code && !user) {
       setIsLoading(true);
       try {
@@ -35,7 +51,7 @@ export default function Home() {
         console.error(error);
       }
     }
-  }, [router, setUser, setIsLoggedIn, setIsLoading, user, isLoggedIn]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <>
       <Head>

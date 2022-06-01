@@ -6,10 +6,14 @@ const LandingPage = () => {
   return (
     <div className="w-full m-[10px] h-[95%] max-w-screen-xl flex justify-center items-center flex-col shadow-3xl rounded-[5px] text-[#fafafa]">
       <div className="w-[200px] h-[200px] rounded-[50%] mb-5 flex justify-center items-center relative overflow-hidden border-[#1DB954] border-solid border-4 p-2">
-        <Image src={user.images[0]?.url} alt={user.display_name} layout="fill" />
+        <Image
+          src={user?.images[0]?.url || "/images/loader.svg"}
+          alt={user?.display_name}
+          layout="fill"
+        />
       </div>
       <h1 className="flex justify-center items-center text-2xl select-none w-[300px] h-[50px]">
-        Welcome, {user.display_name}
+        Welcome, {user?.display_name}
       </h1>
       <h2 className="mt-2 text-2xl">View your statistics</h2>
       <div className="flex flex-col justify-center items-center w-[250px] p-5 mt-5 rounded-md shadow-sm cursor-pointer  gap-2">

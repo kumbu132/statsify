@@ -15,6 +15,10 @@ const accountsApi = axios.create({
   },
 });
 
+export async function checkLogin() {
+  console.log("okay");
+}
+
 export async function fetchUserDetails(reqCode) {
   const tokenRes = await accountsApi.post(
     "/api/token",
@@ -27,6 +31,12 @@ export async function fetchUserDetails(reqCode) {
 
   if (tokenRes.status == 200) {
     authorization = `${tokenRes.data.token_type} ${tokenRes.data.access_token}`;
+
+    localStorage.setItem(
+      "authorization",
+      JSON.stringify({ time: Date.now(), data: tokenRes.data })
+    );
+
     const userApi = axios.create({
       baseURL: "https://api.spotify.com/v1/",
       headers: {
@@ -61,6 +71,23 @@ export async function fetchUserTopGenres() {
   }
 }
 
+export async function fetchUser() {
+  const auth = JSON.parse(localStorage.getItem("authorization"));
+  authorization = `${auth.data.token_type} ${auth.data.access_token}`;
+  const userApi = axios.create({
+    baseURL: "https://api.spotify.com/v1/",
+    headers: {
+      Authorization: authorization,
+      "content-type": "application/json",
+    },
+  });
+  try {
+    return await userApi.get("/me");
+  } catch (error) {
+    return { status: 403 };
+  }
+}
+
 export async function fetchUserRecentlyPlayed() {
   const userApi = axios.create({
     baseURL: "https://api.spotify.com/v1/",
@@ -75,4 +102,15 @@ export async function fetchUserRecentlyPlayed() {
   } catch (error) {
     return { status: 403 };
   }
+}
+
+export function checkIfTokenValid() {
+  const token = localStorage.getItem("authorization");
+  if (token) {
+    const tokenData = JSON.parse(token);
+    if (tokenData.time + 3600000 > Date.now()) {
+      return true;
+    }
+  }
+  return false;
 }

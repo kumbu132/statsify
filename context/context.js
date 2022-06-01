@@ -17,6 +17,7 @@ export function StatsifyProvider({ children }) {
         isLoggedIn,
         user,
         isLoading,
+
         setIsLoading,
         setIsLoggedIn,
         setUser,
