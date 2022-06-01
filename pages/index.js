@@ -38,9 +38,8 @@ export default function Home() {
     };
 
     setIsLoading(false);
-    if (checkIfTokenValid()) {
-      setUserDetails();
-    }
+
+    console.log({ user, router });
 
     if (router.query.code && !user) {
       setIsLoading(true);
@@ -50,8 +49,10 @@ export default function Home() {
       } catch (error) {
         console.error(error);
       }
+    } else if (checkIfTokenValid()) {
+      setUserDetails();
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [router]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <>
       <Head>
