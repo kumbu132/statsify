@@ -114,3 +114,19 @@ export function checkIfTokenValid() {
   }
   return false;
 }
+
+export async function fetchUserTopArtists(timeRange) {
+  const userApi = axios.create({
+    baseURL: "https://api.spotify.com/v1/",
+    headers: {
+      Authorization: authorization,
+      "content-type": "application/json",
+    },
+  });
+
+  try {
+    return await userApi.get(`/me/top/artists?limit=50&time_range=${timeRange}`);
+  } catch (error) {
+    return { status: 403 };
+  }
+}

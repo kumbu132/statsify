@@ -39,8 +39,6 @@ export default function Home() {
 
     setIsLoading(false);
 
-    console.log({ user, router });
-
     if (router.query.code && !user) {
       setIsLoading(true);
       try {

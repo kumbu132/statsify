@@ -21,7 +21,6 @@ const RecentlyPlayed = () => {
       }
       setRecentlyPlayed(res.data.items);
       setIsLoading(false);
-      console.log(JSON.parse(localStorage.getItem("authorization")));
     };
     if (isLoggedIn) {
       fetchData();
