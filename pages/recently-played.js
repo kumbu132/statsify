@@ -19,7 +19,7 @@ const RecentlyPlayed = () => {
       if (res.status && res.status !== 200) {
         router.push("/error");
       }
-      setRecentlyPlayed(res.data.items);
+      setRecentlyPlayed(res.data?.items);
       setIsLoading(false);
     };
     if (isLoggedIn) {

@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const Track = ({ track, isGrid = false, isList = true }) => {
+const Track = ({ track }) => {
   return (
-    <div className="w-full flex  gap-2 h-[70px] md:h-[80px] items-center px-4 border rounded select-none hover:brightness-110 hover:bg-[#363636]">
+    <div className="w-full flex  gap-2 h-[70px] md:h-[80px] items-center justify-between px-4 border rounded select-none hover:brightness-110 hover:bg-[#363636]">
       <div className="w-[50px] md:w-[60px] flex justify-center items-center h-[50px] md:h-[60px] p-2 relative ">
-        <Image src={track.album.images[0]?.url} alt="cover-art" layout="fill" />
+        <Image
+          src={track.album?.images[0]?.url || "/images/loader.svg"}
+          alt="cover-art"
+          layout="fill"
+        />
       </div>
       <div className="p-2 w-[80%] overflow-y-clip">
         <p className="font-bold text-sm md:text-lg">{track.name}</p>
