@@ -20,7 +20,6 @@ export default function Home() {
           setIsLoggedIn(true);
           setUser(res.data);
         } else if (res.status && res.status === 503) {
-          console.log({ res });
         } else {
           setIsLoggedIn(false);
           setUser(null);

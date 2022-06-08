@@ -16,7 +16,6 @@ const Artists = () => {
   const [topArtists, setTopArtists] = useState([]);
 
   useEffect(() => {
-    console.log("in useEffect of Artists");
     setIsLoading(true);
     const fetchData = async () => {
       const res = await fetchUserTopArtists(
@@ -28,11 +27,9 @@ const Artists = () => {
             : "medium_term"
         }`
       );
-      console.log({ res });
       if (res.status && res.status !== 200) {
         router.push("/error");
       }
-      console.log({ artists: res.data?.items });
       setTopArtists(res.data?.items);
       setIsLoading(false);
     };

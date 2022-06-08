@@ -15,7 +15,6 @@ const RecentlyPlayed = () => {
     setIsLoading(true);
     const fetchData = async () => {
       const res = await fetchUserRecentlyPlayed();
-      console.log({ res });
       if (res.status && res.status !== 200) {
         router.push("/error");
       }

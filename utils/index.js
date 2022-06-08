@@ -15,10 +15,6 @@ const accountsApi = axios.create({
   },
 });
 
-export async function checkLogin() {
-  console.log("okay");
-}
-
 export async function fetchUserDetails(reqCode) {
   const tokenRes = await accountsApi.post(
     "/api/token",
@@ -51,23 +47,6 @@ export async function fetchUserDetails(reqCode) {
     }
   } else {
     return null;
-  }
-}
-
-export async function fetchUserTopGenres() {
-  const userApi = axios.create({
-    baseURL: "https://api.spotify.com/v1/",
-    headers: {
-      Authorization: authorization,
-      "content-type": "application/json",
-    },
-  });
-
-  try {
-    const res = await userApi.get("/me/top/artists?limit=50");
-    return res;
-  } catch (error) {
-    return { status: 403 };
   }
 }
 
@@ -145,4 +124,23 @@ export async function fetchUserTopTracks(timeRange) {
   } catch (error) {
     return { status: 403 };
   }
+}
+
+export async function fetchUserTopGenres(timeRange) {
+  const res = await fetchUserTopArtists(timeRange);
+  if (res.status == 200) {
+    // count different genres
+    const genres = {};
+    res.data.items.forEach((artist) => {
+      artist.genres.forEach((genre) => {
+        if (genres[genre]) {
+          genres[genre]++;
+        } else {
+          genres[genre] = 1;
+        }
+      });
+    });
+    return { status: 200, data: genres };
+  }
+  return { status: 403 };
 }
